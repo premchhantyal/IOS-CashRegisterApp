@@ -57,6 +57,11 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         selectedQty.isHidden = false
         selectedQty.text = selectedQtyString
         
+        //show total amount
+        var cost = productManager.getAllProducts()[selectedRow!].price * Double(selectedQtyString)!;
+        totalAmount.isHidden = false
+        totalAmount.text = "\(cost)"
+        
         //check if selected quantity is greater than quantity in stock for the respective product
         if let n = Int(selectedQtyString) { if ( n > productManager.getAllProducts()[selectedRow!].quantity) {
                 var alert = UIAlertController(title: "Error!!", message: "Selected quantity is greater than quantity in stock.", preferredStyle: .alert)
@@ -72,12 +77,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     
     @IBAction func buyProduct(_ sender: Any) {
-        if (selectedRow != nil) {
-            var cost = productManager.getAllProducts()[selectedRow!].price * Double(selectedQtyString)!;
-            
-            //show total amount
-            totalAmount.isHidden = false
-            totalAmount.text = "\(cost)"
+        if (selectedRow != nil) { 
             
             //subtract purchased quantity from stock
             productManager.getAllProducts()[selectedRow!].quantity -= Int(selectedQtyString)!
